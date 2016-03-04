@@ -1,6 +1,8 @@
 
 $(document).on("ready",function(){
   $(".js-btn-search").on("click", getSong);
+  // Have printTime be called when the time is updated
+  $('.js-player').on('timeupdate', printTime);
 });
 
 var getSong = function (){
@@ -39,6 +41,13 @@ function show_artist (response){
         $('.btn-play').addClass("disabled")
         $('.js-player').trigger("pause");
       }
-
     });
 };
+
+// Define a function to print the player's current time
+function printTime () {
+  var current = $('.js-player').prop('currentTime');
+  console.debug('Current time: ' + current);
+  $('.progress_bar').attr("value",current);
+
+}
