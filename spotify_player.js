@@ -21,7 +21,7 @@ function handleError (error){
 };
 
 function show_artist (response){
-  console.log(response);
+  // console.log(response);
       if (response.tracks.items.length === 0){
         $('.errors').append("<a class='error label label-primary'> NO TRACKS FOUND</a>");
       }
@@ -31,8 +31,8 @@ function show_artist (response){
         $('.album_cover').attr("src",response.tracks.items[0].album.images[0].url)
         $('.js-player').attr("src",response.tracks.items[0].preview_url)
       }
-    $('.btn-play').on('click', function(){
 
+    $('.btn-play').on('click', function(){
       if ($('.btn-play').hasClass("disabled")){
         $('.btn-play').removeClass("disabled")
         $('.js-player').trigger("play");
@@ -42,12 +42,35 @@ function show_artist (response){
         $('.js-player').trigger("pause");
       }
     });
+
+    // response.tracks.items[0].artists[0].id
+    getArtist(response.tracks.items[0].artists[0].href)
 };
 
 // Define a function to print the player's current time
 function printTime () {
   var current = $('.js-player').prop('currentTime');
-  console.debug('Current time: ' + current);
+  // console.debug('Current time: ' + current);
   $('.progress_bar').attr("value",current);
+}
+
+var getArtist = function(href) {
+  var request = $.get(href);
+  request.fail(handleError);
+  request.done(show_artist_info);
+}
+
+function show_artist_info (response){
+  console.log(response);
+  $('.author').on('click', function(){
+    $('.js-modal').modal("show");
+  });
+
+  $('.artist_name').empty();
+  $('.artist_name').append("<div>name: "+response.name+
+  "</div>\n <div>genres: "+response.genres[0]+
+  "</div>\n <div>followers: "+response.followers.total+
+  "</div>\n <div>Popularity: "+response.popularity+"</div>")
+  $('.artist_image').attr('src',response.images[0].url)
 
 }
