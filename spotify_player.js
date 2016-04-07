@@ -10,7 +10,6 @@ var getSong = function (){
   $('.author').empty();
   var title = $('.input_search').val().replace(" ","%20");
   var request = $.get('https://api.spotify.com/v1/search?type=track&q='+title);
-  // debugger
   request.fail(handleError);
   request.done(show_artist);
 };
@@ -21,7 +20,6 @@ function handleError (error){
 };
 
 function show_artist (response){
-  // console.log(response);
       if (response.tracks.items.length === 0){
         $('.errors').append("<a class='error label label-primary'> NO TRACKS FOUND</a>");
       }
@@ -50,7 +48,6 @@ function show_artist (response){
 // Define a function to print the player's current time
 function printTime () {
   var current = $('.js-player').prop('currentTime');
-  // console.debug('Current time: ' + current);
   $('.progress_bar').attr("value",current);
 }
 
